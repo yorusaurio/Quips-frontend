@@ -1,4 +1,3 @@
-// src/services/newsService.js
 import http from '@/shared/services/http-common';
 
 export class NewsService {
@@ -18,7 +17,6 @@ export class NewsService {
         });
     }
 
-    // Obtener noticia por ID
     getNewsById(id) {
         return http.get(`/news/${id}`);
     }
@@ -37,6 +35,26 @@ export class NewsService {
                 Authorization: `Bearer ${token}`
             }
         });
+    }
+
+    // Nueva función para subir imágenes a ImgBB
+    uploadImageToImgBB(file) {
+        const formData = new FormData();
+        formData.append('image', file);
+        const apiKey = '8d8f4daf7098ef51df00c7e9401de314';
+
+        return fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.data && data.data.url) {
+                    return data.data.url; // Retornar la URL de la imagen subida
+                } else {
+                    throw new Error('Error al subir imagen a ImgBB');
+                }
+            });
     }
 }
 

@@ -18,10 +18,10 @@
       <h2>Top Usuarios por Transacciones</h2>
       <TopUsersTable :users="topUsersByTransactions" />
 
-      <h2>Top Senders</h2>
+      <h2>Top Enviados</h2>
       <TopSendersTable :senders="topSenders" />
 
-      <h2>Top Receivers</h2>
+      <h2>Top Recibidos</h2>
       <TopReceiversTable :receivers="topReceivers" />
 
       <h2>Top Referidos</h2>

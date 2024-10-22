@@ -45,6 +45,25 @@ export class AnalyticsService {
             }
         });
     }
+    // Obtener los usuarios que más han enviado transacciones (top-senders)
+    getTopSenders(token) {
+        return http.get('/analytics/top-senders', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
+
+    // Obtener los usuarios que más han recibido transacciones (top-receivers)
+    getTopReceivers(token) {
+        return http.get('/analytics/top-receivers', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
 
     // Obtener la línea de tiempo de las fases (phase-timeline)
     getPhaseTimeline(token) {

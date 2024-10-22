@@ -37,7 +37,7 @@ import AnalyticsChart from '@/analytics/pages/AnalyticsChart.vue';
 import TopUsersTable from '@/analytics/pages/TopUsersTable.vue';
 import TopSendersTable from '@/analytics/pages/TopSendersTable.vue';
 import TopReceiversTable from '@/analytics/pages/TopReceiversTable.vue';
-import TopReferralsTable from '@/analytics/pages/TopReferralsTable.vue';  // Importar componente
+import TopReferralsTable from '@/analytics/pages/TopReferralsTable.vue';
 import AnalyticsService from '@/analytics/services/analyticsService';
 
 export default {
@@ -48,14 +48,14 @@ export default {
     TopUsersTable,
     TopSendersTable,
     TopReceiversTable,
-    TopReferralsTable,  // Registrar componente
+    TopReferralsTable
   },
   data() {
     return {
       topUsersByTransactions: [],
       topSenders: [],
       topReceivers: [],
-      topReferrals: [],  // Añadir estado para referidos
+      topReferrals: [],
       token: 'your-auth-token', // Esto debe ser dinámico
     };
   },
@@ -63,7 +63,7 @@ export default {
     this.fetchTopUsersByTransactions();
     this.fetchTopSenders();
     this.fetchTopReceivers();
-    this.fetchTopReferrals();  // Llamar al método de referidos
+    this.fetchTopReferrals();
   },
   methods: {
     async fetchTopUsersByTransactions() {
@@ -93,7 +93,7 @@ export default {
     async fetchTopReferrals() {
       try {
         const response = await AnalyticsService.getTopUsersByReferrals(this.token);
-        this.topReferrals = response.data;
+        this.topReferrals = response.data.filter(referral => referral.totalReferrals > 0);
       } catch (error) {
         console.error("Error al cargar los Top Referidos: ", error.message);
       }
@@ -110,12 +110,6 @@ export default {
 h1 {
   text-align: center;
   color: #333;
-}
-
-p {
-  text-align: center;
-  color: #777;
-  margin-bottom: 30px;
 }
 
 .stats-overview {
@@ -137,5 +131,52 @@ p {
 h2 {
   text-align: center;
   margin-bottom: 20px;
+}
+
+.table-container {
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background-color: #333;
+  color: white;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+@media (max-width: 768px) {
+  .table-container {
+    display: block;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  th, td {
+    padding: 8px;
+  }
 }
 </style>

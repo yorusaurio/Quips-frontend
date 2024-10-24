@@ -1,13 +1,22 @@
 <template>
   <div class="analytics-card">
-    <h2>Analytics</h2>
+    <h2>Analytics</h2> <!-- Título sencillo sin ícono -->
     <div id="chart" class="chart-container"></div>
     <div v-if="loading">Cargando datos...</div>
     <div v-if="error" class="error-message">{{ error }}</div>
     <div class="chart-legend">
-      <div><span class="color-sale"></span> Jugadores en Fase</div>
-      <div><span class="color-distribute"></span> Cuota de Fase Actual</div>
-      <div><span class="color-return"></span> Porcentaje Completado</div>
+      <div class="legend-item">
+        <span class="color-sale legend-bar"></span>
+        <span>Jugadores en Fase</span>
+      </div>
+      <div class="legend-item">
+        <span class="color-distribute legend-bar"></span>
+        <span>Cuota de Fase Actual</span>
+      </div>
+      <div class="legend-item">
+        <span class="color-return legend-bar"></span>
+        <span>Porcentaje Completado</span>
+      </div>
     </div>
   </div>
 </template>
@@ -46,20 +55,20 @@ export default {
           top: '40%',
           textAlign: 'center',
           textStyle: {
-            fontSize: 30,
+            fontSize: 28, // Ajustamos el tamaño de la fuente para dispositivos pequeños
             fontWeight: 'bold',
             color: '#333'
           },
           subtextStyle: {
-            fontSize: 16,
+            fontSize: 14,
             color: '#666'
           }
         },
         series: [
           {
-            name: 'Transactions',
+            name: 'Jugadores en Fase',
             type: 'pie',
-            radius: ['60%', '80%'],
+            radius: ['50%', '70%'], // Reducimos el tamaño del gráfico
             avoidLabelOverlap: false,
             label: {
               show: false
@@ -67,12 +76,17 @@ export default {
             labelLine: {
               show: false
             },
+            animationDuration: 1500, // Animación al cargar
             data: [
               { value: this.cycleData.jugadoresEnFase, name: 'Jugadores en Fase', itemStyle: { color: '#4b9eff' } },
               { value: this.cycleData.cuotaFaseActual - this.cycleData.jugadoresEnFase, name: 'Restante', itemStyle: { color: '#ffd466' } },
             ]
           }
-        ]
+        ],
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b}: {c} ({d}%)',
+        }
       };
 
       this.chartInstance.setOption(option);
@@ -81,7 +95,6 @@ export default {
       const token = 'your-auth-token'; // Asegúrate de obtener el token adecuado
       try {
         const response = await AnalyticsService.getCycleStatus(token);
-        console.log("Datos recibidos del ciclo: ", response.data);
         this.cycleData = response.data;
         this.loading = false;
         this.$nextTick(() => {
@@ -100,7 +113,7 @@ export default {
 
 <style scoped>
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -110,43 +123,51 @@ body {
 }
 
 .analytics-card {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  background: linear-gradient(135deg, rgba(75, 158, 255, 0.1), rgba(75, 158, 255, 0)); /* Azul más suave */
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 25px;
   text-align: center;
-  width: 340px;
+  width: 100%;
+  max-width: 360px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Efecto de transición para hover */
+}
+
+.analytics-card:hover {
+  transform: translateY(-10px); /* Efecto de levantar la tarjeta */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Sombra más intensa al hacer hover */
 }
 
 h2 {
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 20px;
   color: #333;
 }
 
 .chart-container {
-  width: 300px;
-  height: 300px;
+  width: 280px; /* Tamaño reducido del gráfico */
+  height: 280px;
   margin: 0 auto;
 }
 
 .chart-legend {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-top: 15px;
+  text-align: center;
 }
 
-.chart-legend div {
+.legend-item {
   display: flex;
   align-items: center;
 }
 
-.chart-legend span {
+.legend-bar {
   display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 8px;
-  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  border-radius: 50%; /* Cambiamos a círculos para más estilo */
 }
 
 .color-sale {
@@ -164,5 +185,29 @@ h2 {
 .error-message {
   color: red;
   font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .analytics-card {
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  .chart-container {
+    width: 220px; /* Ajuste para pantallas pequeñas */
+    height: 220px;
+  }
+
+  .chart-legend {
+    flex-direction: column; /* Poner la leyenda en columnas en lugar de en fila */
+    align-items: flex-start;
+  }
+
+  .legend-item {
+    margin-bottom: 8px;
+  }
 }
 </style>

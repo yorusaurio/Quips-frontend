@@ -55,6 +55,7 @@ export class AnalyticsService {
     }
 
 
+
     // Obtener los usuarios que más han recibido transacciones (top-receivers)
     getTopReceivers(token) {
         return http.get('/analytics/top-receivers', {

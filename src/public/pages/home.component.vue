@@ -2,132 +2,57 @@
   <div class="home-container">
     <h1>Bienvenido a Quips</h1>
 
-    <!-- Contenedor para las estadísticas principales -->
-    <div class="stats-overview">
-      <CycleStats />
-      <TokenStatus />
+    <!-- Contenedor para las cards categorizadas -->
+    <div class="category-overview">
+      <CategoryCard
+          title="Estadísticas de Ciclo"
+          icon="fas fa-users"
+          description="Resumen de las estadísticas de los ciclos"
+          route="CycleStats"
+      />
+      <CategoryCard
+          title="Estado de los Tokens"
+          icon="fas fa-coins"
+          description="Emisión y estado actual de los tokens"
+          route="TokenStatus"
+      />
+      <CategoryCard
+          title="Top Usuarios y Transacciones"
+          icon="fas fa-chart-bar"
+          description="Visualiza los tops de usuarios y transacciones"
+          route="TopOverview"
+      />
+      <CategoryCard
+          title="Actividad por Hora"
+          icon="fas fa-chart-line"
+          description="Gráfica de la actividad de transacciones por hora"
+          route="TransactionActivity"
+      />
+      <!-- Nuevas cards -->
+      <CategoryCard
+          title="Línea de Tiempo de Fases"
+          icon="fas fa-history"
+          description="Visualiza la línea de tiempo de las fases"
+          route="PhaseTimeline"
+      />
+      <CategoryCard
+          title="Grafo de Transacciones"
+          icon="fas fa-network-wired"
+          description="Visualiza las transacciones en formato de grafo"
+          route="TransactionGraph"
+      />
     </div>
-
-    <!-- Contenedor para los gráficos -->
-    <div class="charts-overview">
-      <div class="chart-container">
-        <AnalyticsChart />
-      </div>
-      <div class="chart-container">
-        <TransactionActivityChart :transactionData="transactionData" />
-      </div>
-      <div class="chart-container">
-        <TransactionGraph />
-      </div>
-    </div>
-
-    <!-- Contenedor para las tablas -->
-    <div class="table-overview">
-      <h2>Top Usuarios por Transacciones</h2>
-      <TopUsersTable :users="topUsersByTransactions" />
-
-      <h2>Top Enviados</h2>
-      <TopSendersTable :senders="topSenders" />
-
-      <h2>Top Recibidos</h2>
-      <TopReceiversTable :receivers="topReceivers" />
-
-      <h2>Top Referidos</h2>
-      <TopReferralsTable :referrals="topReferrals" />
-    </div>
-
-    <PhaseTimeline />
-
   </div>
-
 </template>
 
 <script>
-import CycleStats from '@/analytics/pages/CycleStats.vue';
-import TokenStatus from '@/analytics/pages/TokenStatus.vue';
-import AnalyticsChart from '@/analytics/pages/AnalyticsChart.vue';
-import TransactionActivityChart from '@/analytics/pages/TransactionActivityChart.vue';
-import TransactionGraph from '@/analytics/pages/TransactionGraph.vue'; // Componente del grafo
-import TopUsersTable from '@/analytics/pages/TopUsersTable.vue';
-import TopSendersTable from '@/analytics/pages/TopSendersTable.vue';
-import TopReceiversTable from '@/analytics/pages/TopReceiversTable.vue';
-import TopReferralsTable from '@/analytics/pages/TopReferralsTable.vue';
-import AnalyticsService from '@/analytics/services/analyticsService';
-import PhaseTimeline from '@/analytics/pages/PhaseTimeline.vue';
+import CategoryCard from '@/analytics/pages/CategoryCard.vue';
 
 export default {
   components: {
-    CycleStats,
-    TokenStatus,
-    AnalyticsChart,
-    TransactionActivityChart,
-    TransactionGraph, // Añadido el nuevo componente
-    TopUsersTable,
-    TopSendersTable,
-    TopReceiversTable,
-    TopReferralsTable,
-    PhaseTimeline
-  },
-  data() {
-    return {
-      topUsersByTransactions: [],
-      topSenders: [],
-      topReceivers: [],
-      topReferrals: [],
-      transactionData: {}, // Añade la propiedad para la actividad de transacciones
-      token: 'your-auth-token', // Esto debe ser dinámico
-    };
-  },
-  mounted() {
-    this.fetchTopUsersByTransactions();
-    this.fetchTopSenders();
-    this.fetchTopReceivers();
-    this.fetchTopReferrals();
-    this.fetchTransactionActivity(); // Llamada para obtener la actividad de transacciones
-  },
-  methods: {
-    async fetchTopUsersByTransactions() {
-      try {
-        const response = await AnalyticsService.getTopUsersByTransactions(this.token);
-        this.topUsersByTransactions = response.data;
-      } catch (error) {
-        console.error("Error al cargar los usuarios por transacciones: ", error.message);
-      }
-    },
-    async fetchTopSenders() {
-      try {
-        const response = await AnalyticsService.getTopSenders(this.token);
-        this.topSenders = response.data;
-      } catch (error) {
-        console.error("Error al cargar los Top Senders: ", error.message);
-      }
-    },
-    async fetchTopReceivers() {
-      try {
-        const response = await AnalyticsService.getTopReceivers(this.token);
-        this.topReceivers = response.data;
-      } catch (error) {
-        console.error("Error al cargar los Top Receivers: ", error.message);
-      }
-    },
-    async fetchTopReferrals() {
-      try {
-        const response = await AnalyticsService.getTopUsersByReferrals(this.token);
-        this.topReferrals = response.data.filter(referral => referral.totalReferrals > 0);
-      } catch (error) {
-        console.error("Error al cargar los Top Referidos: ", error.message);
-      }
-    },
-    async fetchTransactionActivity() {
-      try {
-        const response = await AnalyticsService.getTransactionActivityByHour(this.token);
-        this.transactionData = response.data; // Asigna los datos de la actividad de transacciones
-      } catch (error) {
-        console.error("Error al cargar la actividad de transacciones: ", error.message);
-      }
-    }
+    CategoryCard
   }
-};
+}
 </script>
 
 <style scoped>
@@ -137,114 +62,16 @@ export default {
 
 h1 {
   text-align: center;
-  color: #333;
+  margin-bottom: 40px;
 }
 
-.stats-overview {
+.category-overview {
   display: flex;
-  justify-content: space-around;
-  margin-bottom: 30px;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
-.charts-overview {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
-}
-
-.chart-container {
-  width: 45%;
-  min-width: 300px;
-  margin: 10px;
-}
-
-.table-overview {
-  margin-top: 40px;
-}
-
-.table-container {
-  margin-bottom: 20px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-thead {
-  background-color: #333;
-  color: white;
-}
-
-th, td {
-  padding: 12px;
-  text-align: center;
-  border: 1px solid #ddd;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-tbody tr:hover {
-  background-color: #f1f1f1;
-}
-
-/* Media queries para pantallas pequeñas */
-@media (max-width: 1024px) {
-  .stats-overview,
-  .charts-overview {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .chart-container {
-    width: 90%;
-    min-width: 300px;
-  }
-
-  table {
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 768px) {
-  h2 {
-    font-size: 18px;
-  }
-
-  table {
-    font-size: 12px;
-  }
-
-  th, td {
-    padding: 8px;
-  }
-
-  .chart-container {
-    width: 100%;
-    min-width: 300px;
-  }
-}
-
-@media (max-width: 576px) {
-  h1 {
-    font-size: 24px;
-  }
-
-  h2 {
-    font-size: 16px;
-  }
-
-  table {
-    font-size: 10px;
-  }
-
-  th, td {
-    padding: 6px;
-  }
+.category-overview > * {
+  margin: 20px;
 }
 </style>

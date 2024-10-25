@@ -3,6 +3,13 @@ import HomeComponent from '../public/pages/home.component.vue';
 import NewsDashboard from '../articles/pages/newsdashboard.component.vue'
 import AddEditNews from '../articles/pages/addeditnews.component.vue'
 import ProfileComponent from "@/identification/pages/profile.component.vue";
+import TopOverview from "@/analytics/pages/TopOverview.vue";
+import TokenStatus from "@/analytics/pages/TokenStatus.vue";
+import CycleStats from "@/analytics/pages/CycleStats.vue";
+import TransactionActivityChart from "@/analytics/pages/TransactionActivityChart.vue";
+import TransactionActivityParent from "@/analytics/pages/TransactionActivityParent.vue";
+import TransactionGraph from "@/analytics/pages/TransactionGraph.vue";
+import PhaseTimeline from "@/analytics/pages/PhaseTimeline.vue";
 
 const routes = [
   {
@@ -23,6 +30,39 @@ const routes = [
   { path: '/profile', name: 'profile', component: ProfileComponent },
   { path: '/news/add', name: 'add-news', component: AddEditNews },
   { path: '/news/edit/:id', name: 'edit-news', component: AddEditNews, props: true },
+
+    {
+      path: '/cycle-stats',
+      name: 'CycleStats',
+      component: CycleStats,
+    },
+    {
+      path: '/token-status',
+      name: 'TokenStatus',
+      component: TokenStatus,
+    },
+    {
+      path: '/top-overview',
+      name: 'TopOverview',
+      component: TopOverview,
+    },
+    {
+      path: '/transaction-activity',
+      name: 'TransactionActivity',
+      component: TransactionActivityParent,
+    },
+  {
+    path: '/transaction-graph',
+    name: 'TransactionGraph',
+    component: TransactionGraph
+  },
+  {
+    path: '/phase-timeline',
+    name: 'PhaseTimeline',
+    component: PhaseTimeline
+  }
+    ,
+
 ];
 
 const router = createRouter({

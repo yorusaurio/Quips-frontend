@@ -1,6 +1,10 @@
 <template>
   <div class="transaction-activity-chart">
     <div ref="chart" class="chart-container"></div>
+    <!-- Mostrar mensaje si no hay datos -->
+    <div v-if="!hasData" class="no-data-message">
+      No hay datos disponibles para mostrar.
+    </div>
   </div>
 </template>
 
@@ -14,27 +18,37 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      hasData: true, // Controla si hay datos para mostrar
+    };
+  },
   watch: {
     transactionData: {
       immediate: true,
       handler(newData) {
-        if (Object.keys(newData).length) {
+        console.log("Datos recibidos:", newData);  // Verificación de datos en consola
+        if (newData && Object.keys(newData).length > 0) {
+          this.hasData = true;
           this.renderChart();
+        } else {
+          this.hasData = false;
         }
       }
     }
   },
   methods: {
     renderChart() {
+      if (!this.hasData) return; // Si no hay datos, no renderizamos
+
       try {
         const chart = echarts.init(this.$refs.chart);
         const labels = Object.keys(this.transactionData);
 
-        // Convertir las horas a formato de 24 horas y ordenarlas
+        // Ordenar las horas
         const sortedLabels = labels.sort((a, b) => {
           const [hourA, minuteA] = a.split(':').map(Number);
           const [hourB, minuteB] = b.split(':').map(Number);
-
           return hourA - hourB || minuteA - minuteB;
         });
 
@@ -59,7 +73,7 @@ export default {
           },
           xAxis: {
             type: 'category',
-            data: sortedLabels,  // Usar las etiquetas ordenadas
+            data: sortedLabels,
             axisLine: {
               lineStyle: {
                 color: '#ccc'
@@ -89,14 +103,14 @@ export default {
           series: [{
             name: 'Transacciones',
             type: 'bar',
-            data: data,  // Usar los datos correspondientes a las etiquetas ordenadas
+            data: data,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                 offset: 0,
-                color: '#73C0DE' // Color en la parte superior
+                color: '#73C0DE'
               }, {
                 offset: 1,
-                color: '#3B8AC4' // Color en la parte inferior
+                color: '#3B8AC4'
               }])
             },
             barWidth: '60%'
@@ -115,8 +129,6 @@ export default {
         console.error("Error al configurar el gráfico: ", error);
       }
     }
-
-
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.renderChart);
@@ -125,8 +137,6 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
-
 .chart-container {
   width: 100%;
   height: 400px;
@@ -136,6 +146,13 @@ export default {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   transition: all 0.3s ease;
+}
+
+.no-data-message {
+  text-align: center;
+  color: #999;
+  font-size: 16px;
+  margin-top: 20px;
 }
 
 .transaction-activity-chart:hover .chart-container {

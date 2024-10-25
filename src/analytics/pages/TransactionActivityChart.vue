@@ -29,7 +29,16 @@ export default {
       try {
         const chart = echarts.init(this.$refs.chart);
         const labels = Object.keys(this.transactionData);
-        const data = Object.values(this.transactionData);
+
+        // Convertir las horas a formato de 24 horas y ordenarlas
+        const sortedLabels = labels.sort((a, b) => {
+          const [hourA, minuteA] = a.split(':').map(Number);
+          const [hourB, minuteB] = b.split(':').map(Number);
+
+          return hourA - hourB || minuteA - minuteB;
+        });
+
+        const data = sortedLabels.map(label => this.transactionData[label]);
 
         const options = {
           title: {
@@ -50,7 +59,7 @@ export default {
           },
           xAxis: {
             type: 'category',
-            data: labels,
+            data: sortedLabels,  // Usar las etiquetas ordenadas
             axisLine: {
               lineStyle: {
                 color: '#ccc'
@@ -80,7 +89,7 @@ export default {
           series: [{
             name: 'Transacciones',
             type: 'bar',
-            data: data,
+            data: data,  // Usar los datos correspondientes a las etiquetas ordenadas
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                 offset: 0,
@@ -106,6 +115,8 @@ export default {
         console.error("Error al configurar el gráfico: ", error);
       }
     }
+
+
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.renderChart);

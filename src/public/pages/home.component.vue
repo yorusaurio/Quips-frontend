@@ -16,6 +16,9 @@
       <div class="chart-container">
         <TransactionActivityChart :transactionData="transactionData" />
       </div>
+      <div class="chart-container">
+        <TransactionGraph />
+      </div>
     </div>
 
     <!-- Contenedor para las tablas -->
@@ -32,31 +35,38 @@
       <h2>Top Referidos</h2>
       <TopReferralsTable :referrals="topReferrals" />
     </div>
-  </div>
-</template>
 
+    <PhaseTimeline />
+
+  </div>
+
+</template>
 
 <script>
 import CycleStats from '@/analytics/pages/CycleStats.vue';
 import TokenStatus from '@/analytics/pages/TokenStatus.vue';
 import AnalyticsChart from '@/analytics/pages/AnalyticsChart.vue';
-import TransactionActivityChart from '@/analytics/pages/TransactionActivityChart.vue'; // Importa el nuevo componente
+import TransactionActivityChart from '@/analytics/pages/TransactionActivityChart.vue';
+import TransactionGraph from '@/analytics/pages/TransactionGraph.vue'; // Componente del grafo
 import TopUsersTable from '@/analytics/pages/TopUsersTable.vue';
 import TopSendersTable from '@/analytics/pages/TopSendersTable.vue';
 import TopReceiversTable from '@/analytics/pages/TopReceiversTable.vue';
 import TopReferralsTable from '@/analytics/pages/TopReferralsTable.vue';
 import AnalyticsService from '@/analytics/services/analyticsService';
+import PhaseTimeline from '@/analytics/pages/PhaseTimeline.vue';
 
 export default {
   components: {
     CycleStats,
     TokenStatus,
     AnalyticsChart,
-    TransactionActivityChart, // Añade el nuevo componente aquí
+    TransactionActivityChart,
+    TransactionGraph, // Añadido el nuevo componente
     TopUsersTable,
     TopSendersTable,
     TopReceiversTable,
-    TopReferralsTable
+    TopReferralsTable,
+    PhaseTimeline
   },
   data() {
     return {

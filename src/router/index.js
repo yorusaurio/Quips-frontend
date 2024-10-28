@@ -10,6 +10,7 @@ import TransactionActivityChart from "@/analytics/pages/TransactionActivityChart
 import TransactionActivityParent from "@/analytics/pages/TransactionActivityParent.vue";
 import TransactionGraph from "@/analytics/pages/TransactionGraph.vue";
 import PhaseTimeline from "@/analytics/pages/PhaseTimeline.vue";
+import TokenStatusWrapper from "@/analytics/pages/TokenStatusWrapper.vue";
 
 const routes = [
   {
@@ -39,7 +40,7 @@ const routes = [
     {
       path: '/token-status',
       name: 'TokenStatus',
-      component: TokenStatus,
+      component: TokenStatusWrapper,
     },
     {
       path: '/top-overview',

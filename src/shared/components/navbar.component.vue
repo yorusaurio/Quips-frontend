@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <Menubar :model="items" />
+  <div class="navbar">
+    <div class="menu-left">
+      <Menubar :model="leftItems" class="menubar-custom" />
+    </div>
+    <div class="menu-right">
+      <Menubar :model="rightItems" class="menubar-custom" />
+    </div>
   </div>
 </template>
 
@@ -14,7 +19,7 @@ export default {
   },
   data() {
     return {
-      items: [
+      leftItems: [
         {
           label: 'Inicio',
           icon: 'pi pi-fw pi-home',
@@ -35,7 +40,9 @@ export default {
           command: () => {
             this.$router.push('/profile');
           }
-        },
+        }
+      ],
+      rightItems: [
         {
           label: 'Cerrar Sesión',
           icon: 'pi pi-fw pi-sign-out',
@@ -51,21 +58,58 @@ export default {
 </script>
 
 <style scoped>
-.menubar {
-  background-color: #2ECC71;
-  color: white;
-}
-
-.menubar .p-menubar {
+/* Contenedor principal de la barra */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
   padding: 10px;
+  margin-bottom: 10px;
 }
 
-.menubar .p-menubar a {
-  color: white;
-  text-decoration: none;
+/* Menú izquierdo (Inicio, Noticias, Perfil) */
+.menu-left {
+  display: flex;
+  flex: 1;
 }
 
-.menubar .p-menubar a:hover {
-  text-decoration: underline;
+/* Menú derecho (Cerrar Sesión) */
+.menu-right {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.menubar-custom {
+  background-color: transparent;
+  border: none;
+}
+
+.menubar-custom .p-menubar-root-list > li {
+  margin: 0 15px;
+}
+
+.menubar-custom .p-menubar-root-list > li a {
+  color: #2d3436; /* Color del texto */
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+/* Efecto hover */
+.menubar-custom .p-menubar-root-list > li a:hover {
+  color: #6b73ff; /* Color al pasar el cursor */
+}
+
+.menubar-custom .p-menubar-root-list > li .pi {
+  margin-right: 8px;
+}
+
+.menubar-custom .p-menubar-root-list > li a:hover .pi {
+  color: #6b73ff;
 }
 </style>

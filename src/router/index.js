@@ -11,6 +11,7 @@ import TransactionActivityParent from "@/analytics/pages/TransactionActivityPare
 import TransactionGraph from "@/analytics/pages/TransactionGraph.vue";
 import PhaseTimeline from "@/analytics/pages/PhaseTimeline.vue";
 import TokenStatusWrapper from "@/analytics/pages/TokenStatusWrapper.vue";
+import PlayersListPage from "@/analytics/pages/PlayersListPage.vue";
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
       name: 'TokenStatus',
       component: TokenStatusWrapper,
     },
+  {
+    path: '/players-list',
+    name: 'PlayersListPage',
+    component: PlayersListPage
+  },
     {
       path: '/top-overview',
       name: 'TopOverview',

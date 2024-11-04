@@ -19,6 +19,24 @@ export class AnalyticsService {
         });
     }
 
+    // Obtener la actividad de un usuario específico (user-activity/{userId})
+    getUserActivity(userId, token) {
+        return http.get(`/analytics/user-activity/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
+    // Obtener la actividad de todos los usuarios (user-activity)
+    getAllUsersActivity(token) {
+        return http.get('/analytics/user-activity', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
     // Obtener el gráfico de transacciones (transaction-graph)
     getTransactionGraph(token) {
         return http.get('/analytics/transaction-graph', {

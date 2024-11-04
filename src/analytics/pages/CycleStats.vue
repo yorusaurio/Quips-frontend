@@ -1,7 +1,7 @@
 <template>
   <div class="stats-container">
     <!-- Jugadores en Fase -->
-    <div class="stat-card jugadores">
+    <div class="stat-card jugadores" @click="goToPlayersList">
       <div class="stat-icon icon-jugadores">
         <i class="fas fa-users"></i> <!-- Icono para jugadores -->
       </div>
@@ -33,7 +33,8 @@ export default {
     return {
       jugadoresEnFase: 0,
       faseActual: 0,
-      error: null
+      error: null,
+      token: 'your-auth-token' // Asegúrate de obtener el token adecuado
     };
   },
   mounted() {
@@ -41,15 +42,17 @@ export default {
   },
   methods: {
     async fetchCycleData() {
-      const token = 'your-auth-token'; // Asegúrate de obtener el token adecuado
       try {
-        const response = await AnalyticsService.getCycleStatus(token);
+        const response = await AnalyticsService.getCycleStatus(this.token);
         this.jugadoresEnFase = response.data.jugadoresEnFase;
         this.faseActual = response.data.faseActual;
       } catch (error) {
         console.error("Error al cargar los datos del ciclo: ", error.response || error.message);
         this.error = `Error al cargar los datos: ${error.response?.data?.message || error.message}`;
       }
+    },
+    goToPlayersList() {
+      this.$router.push('/players-list');
     }
   }
 };

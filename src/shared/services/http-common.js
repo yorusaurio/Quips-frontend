@@ -1,6 +1,6 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseURL: 'http://localhost:8080/api/',
+    baseURL: 'https://quips-backend-production.up.railway.app/api/',
     headers: { 'Content-type': 'application/json' }
 });

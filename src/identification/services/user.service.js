@@ -9,7 +9,7 @@ export class UserService {
      * @returns {Promise} - Promesa que resuelve con el token o con el error
      */
     login(username, password) {
-        return http.post('/users/login', { username, password })
+        return http.post('/analytics/login', { username, password })
             .then(response => {
                 if (response && response.data && response.data.token) {
                     return { token: response.data.token }; // Retorna solo el token si existe
@@ -35,7 +35,7 @@ export class UserService {
      * @returns {Promise} - Promesa que resuelve con la información del usuario
      */
     getUserInfo(token) {
-        return http.get('/users/me', {
+        return http.get('/analytics/me', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
